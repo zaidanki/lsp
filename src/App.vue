@@ -1,32 +1,69 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-img style="height: 100vh" :src="bgImg">
+    <v-app-bar
+      app
+      flat
+      class="transparent"
+      dark
+      style="margin: 0.5% 7%"
+    >
+      <div class="d-flex align-center">
+        <router-link to="/">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          :src="logoImg"
+          transition="scale-transition"
+          width="200"
+          
+        />
+</router-link>
+        
+          
+      </div>
+
+      <v-spacer></v-spacer>
+      <v-card :key="keyofauth" outlined class="transparent" >
+      <v-btn  v-if="!auth" rounded depressed style="color:black" color="white" to="/Admin">Admin Login</v-btn>
+      <v-btn  v-else @click="logout()" rounded depressed style="color:black" color="white" >Logout</v-btn>
+      </v-card>
+    </v-app-bar>
+
+    <v-main>
+      <router-view></router-view>   
+    </v-main>
+    </v-img>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+// import HelloWorld from './components/HelloWorld';
+import bgImg from './assets/Pictures/main-bg.jpg'
+import logoImg from './assets/logo.png'
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: 'App',
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  components: {
+    // HelloWorld,
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  },
+
+
+  data: () => ({
+    bgImg,
+    logoImg,
+    auth: localStorage['Auth'],
+    keyofauth: 1,
+  }),
+  methods: {
+    logout(){
+      localStorage['Auth'] = ""
+      this.$router.push(this.$route.query.redirect || '/')
+     location.reload()
+    }
+  },
+};
+</script>
